@@ -9,3 +9,15 @@ services:
       - .:/todo_app
     ports:
       - "8000:8000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.001'
+          memory: 50M
+        reservations:
+          cpus: '0.0001'
+          memory: 20M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
