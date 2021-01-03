@@ -16,7 +16,7 @@ class TodoTestCase(TestCase):
         )
 
     def test_get_todos(self):
-        request = self.factory.get("/todo_app/todos/?status=aad")
+        request = self.factory.get("/")
 
         middleware = SessionMiddleware()
         middleware.process_request(request)
