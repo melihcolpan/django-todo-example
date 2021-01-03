@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: bash -c "ls && cd todo_project && ls && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    container_name: todo_app
+    volumes:
+      - .:/todo_app
+    ports:
+      - "8000:8000"
