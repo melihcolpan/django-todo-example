@@ -28,7 +28,7 @@ SECRET_KEY = "<FAKE-SECRET>"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["3.9.39.158"]
 
 
 # Application definition
