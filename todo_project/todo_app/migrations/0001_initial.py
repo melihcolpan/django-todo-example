@@ -8,28 +8,32 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=48)),
-                ('surname', models.CharField(max_length=48)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("name", models.CharField(max_length=48)),
+                ("surname", models.CharField(max_length=48)),
             ],
         ),
         migrations.CreateModel(
-            name='Todo',
+            name="Todo",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('is_completed', models.BooleanField(default=False)),
-                ('title', models.CharField(max_length=200)),
-                ('content', models.TextField(max_length=1000)),
-                ('last_updated', models.DateTimeField(auto_now_add=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='todo_app.user')),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("is_completed", models.BooleanField(default=False)),
+                ("title", models.CharField(max_length=200)),
+                ("content", models.TextField(max_length=1000)),
+                ("last_updated", models.DateTimeField(auto_now_add=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="todo_app.user"
+                    ),
+                ),
             ],
         ),
     ]

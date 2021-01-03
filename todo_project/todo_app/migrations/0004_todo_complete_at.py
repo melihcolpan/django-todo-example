@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('todo_app', '0003_auto_20210103_0130'),
+        ("todo_app", "0003_auto_20210103_0130"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='todo',
-            name='complete_at',
+            model_name="todo",
+            name="complete_at",
             field=models.DateTimeField(default=None),
         ),
     ]

@@ -7,13 +7,13 @@ import todo_app.utils
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('todo_app', '0004_todo_complete_at'),
+        ("todo_app", "0004_todo_complete_at"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='todo',
-            name='is_completed',
+            model_name="todo",
+            name="is_completed",
             field=models.BooleanField(default=todo_app.utils.date_shift),
         ),
     ]
