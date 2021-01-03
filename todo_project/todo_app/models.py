@@ -1,4 +1,5 @@
-from datetime import datetime
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 from django.db import models
 
@@ -9,11 +10,6 @@ class User(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=48)
     surname = models.CharField(max_length=48)
-
-    # @classmethod
-    # def create(cls, name, surname):
-    #     user = cls(name=name, surname=surname)
-    #     return user
 
 
 class Todo(models.Model):
