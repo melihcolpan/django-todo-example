@@ -28,7 +28,7 @@ SECRET_KEY = "<FAKE-SECRET>"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["3.9.39.158", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["3.9.39.158", "127.0.0.1", "localhost", "opia.work"]
 
 
 # Application definition
