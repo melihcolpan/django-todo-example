@@ -83,12 +83,12 @@
                         <div class="col-auto m-1 p-0 d-flex align-items-center">
                             <h2 class="m-0 p-0">
                                 {% if todo.is_completed is True %}
-                                    <i class="fa fa-check-square-o text-primary btn m-0 p-0" data-toggle="tooltip"
-                                       data-placement="bottom" title="Mark as todo"></i>
+                                    <i class="fa fa-check-square-o text-primary btn m-0 p-0 my-check" data-toggle="tooltip"
+                                       data-placement="bottom" title="Mark as todo" about="{{ todo.id }}"></i>
                                 {% else %}
-                                    <i class="fa fa-square-o text-primary btn m-0 p-0" data-toggle="tooltip"
+                                    <i class="fa fa-square-o text-primary btn m-0 p-0 my-check" data-toggle="tooltip"
                                        data-placement="bottom"
-                                       title="Mark as complete"></i>
+                                       title="Mark as complete" about="{{ todo.id }}"></i>
                                 {% endif %}
                             </h2>
                         </div>

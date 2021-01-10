@@ -4,6 +4,14 @@ window.onload = function () {
         problemFree: false
     });
 
+    var x = localStorage.getItem("scroll");
+    window.scrollTo(0, x);
+
+    document.onscroll = function(){
+        localStorage.setItem("scroll", window.pageYOffset);
+    }
+
+
     $('[data-toggle="tooltip"]').tooltip();
 
     function formatDate(date) {
@@ -95,7 +103,7 @@ window.onload = function () {
     $(".edit-btn").click(function () {
         todo_id = $(this).attr('about');
 
-        var row_input = $(this).parent().eq(3).children('div:nth-child(2)').children('input');
+        var row_input = $(this).parent().eq(3).children('div:nth-child(0)').children('input');
         row_input.attr("readonly", false);
         var len = row_input.val().length;
         row_input[0].focus();
@@ -115,6 +123,37 @@ window.onload = function () {
         xhr.send(JSON.stringify({
             todo_id: todo_id,
             title: row_input.val()
+        }));
+        xhr.onload = function () {
+            console.log(this.responseText);
+            var data = JSON.parse(this.responseText);
+            console.log(data);
+            location.reload();
+        };
+
+    });
+
+    $(".my-check").click(function () {
+        console.log("my-check");
+        todo_id = $(this).attr('about');
+        console.log(todo_id)
+        classes = $(this).attr('class');
+        console.log(classes);
+        if (classes.includes('fa-square-o')) {
+            is_completed = true;
+        } else {
+            is_completed = false;
+        }
+
+        var row_input = $(this).parent().eq(3).children('div:nth-child(2)').children('input');
+        row_input.attr("readonly", true);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("PUT", 'http://opia.work/', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+            todo_id: todo_id,
+            is_completed: is_completed
         }));
         xhr.onload = function () {
             console.log(this.responseText);
