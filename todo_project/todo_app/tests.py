@@ -71,3 +71,4 @@ class TodoTestCase(TestCase):
 
         response = Todos.as_view()(request)
         self.assertEqual(response.status_code, 200)
+

@@ -44,7 +44,7 @@ window.onload = function () {
         }
 
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", 'http://3.9.39.158:8000/', true);
+        xhr.open("POST", 'http://localhost:8000/', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
             title: getVal,
@@ -63,7 +63,7 @@ window.onload = function () {
         console.log(todo_id);
 
         var xhr = new XMLHttpRequest();
-        xhr.open("DELETE", 'http://3.9.39.158:8000/', true);
+        xhr.open("DELETE", 'http://localhost:8000/', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
             todo_id: todo_id
@@ -110,7 +110,7 @@ window.onload = function () {
         row_input.attr("readonly", true);
 
         var xhr = new XMLHttpRequest();
-        xhr.open("PUT", 'http://3.9.39.158:8000/', true);
+        xhr.open("PUT", 'http://opia.work/', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
             todo_id: todo_id,
