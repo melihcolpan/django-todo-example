@@ -1,10 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from cerberus import Validator
 
 
 def validate_register(_in):
-    schema = {
-
-    }
+    schema = {}
 
     v = Validator(schema)
     is_valid = v.validate(_in)
@@ -12,9 +13,7 @@ def validate_register(_in):
 
 
 def validate_login(_in):
-    schema = {
-
-    }
+    schema = {}
 
     v = Validator(schema)
     is_valid = v.validate(_in)
@@ -22,9 +21,7 @@ def validate_login(_in):
 
 
 def validate_logout(_in):
-    schema = {
-
-    }
+    schema = {}
 
     v = Validator(schema)
     is_valid = v.validate(_in)
@@ -32,9 +29,7 @@ def validate_logout(_in):
 
 
 def validate_password_reset(_in):
-    schema = {
-
-    }
+    schema = {}
 
     v = Validator(schema)
     is_valid = v.validate(_in)
@@ -42,9 +37,7 @@ def validate_password_reset(_in):
 
 
 def validate_password_update(_in):
-    schema = {
-
-    }
+    schema = {}
 
     v = Validator(schema)
     is_valid = v.validate(_in)
