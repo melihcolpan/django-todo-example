@@ -4,8 +4,11 @@
 from todo_app import validations as v
 from todo_app.middlewares import validator
 
+from ratelimit.decorators import ratelimit
+
 
 @validator(v.validate_register)
+@ratelimit(key="ip", rate="1/m")
 def register(request):
     pass
 
