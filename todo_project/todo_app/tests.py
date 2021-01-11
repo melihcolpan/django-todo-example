@@ -16,16 +16,21 @@ class TodoTestCase(TestCase):
         self.access_token = self.user.generate_access_token()
 
     def test_register(self):
-        request = self.client.get("/register")
+        data = {"username": "Test Username", "email": "a@b.com", "password": "secret"}
+        request = self.client.post(
+            "/auth/register", data=data, content_type="application/json"
+        )
+
+        self.assertEqual(201, request.status_code)
 
     def test_login(self):
-        request = self.client.get("/login")
+        request = self.client.get("/auth/login")
 
     def test_logout(self):
-        request = self.client.get("/logout")
+        request = self.client.get("/auth/logout")
 
     def test_password_reset(self):
-        request = self.client.get("/password_reset")
+        request = self.client.get("/auth/password_reset")
 
     def test_password_update(self):
-        request = self.client.get("/password_update")
+        request = self.client.get("/auth/password_update")

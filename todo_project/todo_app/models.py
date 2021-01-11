@@ -12,6 +12,7 @@ from todo_app.consts import JWT_ALGORITHM, JWT_EXP_DELTA_SECONDS, JWT_SECRET
 class User(models.Model):
     id = models.AutoField(primary_key=True)
     is_active = models.BooleanField(default=True)
+    is_verified = models.BooleanField(default=False)
     username = models.CharField(max_length=48)
     email = models.CharField(max_length=48, unique=True)
     password = models.CharField(max_length=48)
