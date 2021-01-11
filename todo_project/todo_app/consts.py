@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from todo_project.settings import SECRET_KEY
 
 JWT_SECRET = SECRET_KEY
