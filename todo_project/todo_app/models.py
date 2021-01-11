@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import jwt
 from datetime import datetime, timedelta
 
+import jwt
 from django.db import models
 
-from todo_app.consts import JWT_ALGORITHM, JWT_SECRET, JWT_EXP_DELTA_SECONDS
+from todo_app.consts import JWT_ALGORITHM, JWT_EXP_DELTA_SECONDS, JWT_SECRET
 
 
 class User(models.Model):

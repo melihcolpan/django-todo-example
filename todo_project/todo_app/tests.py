@@ -3,7 +3,7 @@
 
 from django.test import TestCase
 
-from .models import User, Todo
+from .models import Todo, User
 
 
 class TodoTestCase(TestCase):

@@ -1,14 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import jwt
 import json
 from json import JSONDecodeError
 
+import jwt
 from django.http import HttpResponse
 
-
-from todo_app.consts import JWT_SECRET, JWT_ALGORITHM
+from todo_app.consts import JWT_ALGORITHM, JWT_SECRET
 
 
 def login_required(func):
