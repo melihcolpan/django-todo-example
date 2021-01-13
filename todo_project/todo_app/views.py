@@ -4,7 +4,7 @@
 import json
 
 from django.db.utils import IntegrityError
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from ratelimit.decorators import ratelimit
 
 from todo_app import validations as v
@@ -29,24 +29,31 @@ def register(request):
 
 @validator(v.validate_verification)
 def verification(request):
-    pass
+    return NotImplemented
 
 
 @validator(v.validate_login)
 def login(request):
-    pass
+    _in = json.loads(request.body.decode("utf-8"))
+
+    try:
+        user = User.objects.filter(email=_in["email"], password=_in["password"]).get()
+        return JsonResponse({"data": {"access_token": user.generate_access_token()}})
+
+    except User.DoesNotExist:
+        return HttpResponse(status=404)
 
 
 @validator(v.validate_logout)
 def logout(request):
-    pass
+    return NotImplemented
 
 
 @validator(v.validate_password_reset)
 def password_reset(request):
-    pass
+    return NotImplemented
 
 
 @validator(v.validate_password_update)
 def password_update(request):
-    pass
+    return NotImplemented

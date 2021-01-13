@@ -23,8 +23,19 @@ class TodoTestCase(TestCase):
 
         self.assertEqual(201, request.status_code)
 
-    def test_login(self):
+    def test_verification(self):
         request = self.client.get("/auth/login")
+
+    def test_login(self):
+        data = {"email": self.user.email, "password": self.user.password}
+        request = self.client.post(
+            "/auth/login", data=data, content_type="application/json"
+        )
+        self.assertEqual(200, request.status_code)
+
+        result = request.json()
+        self.assertIn("data", result)
+        self.assertIn("access_token", result["data"])
 
     def test_logout(self):
         request = self.client.get("/auth/logout")

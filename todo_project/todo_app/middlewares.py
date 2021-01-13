@@ -5,7 +5,7 @@ import json
 from json import JSONDecodeError
 
 import jwt
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 from todo_app.consts import JWT_ALGORITHM, JWT_SECRET
 
@@ -41,7 +41,7 @@ def validator(schema=None):
                 _in = dict(request.GET)
                 valid, errors = schema(_in)
                 if not valid:
-                    return HttpResponse(errors, status=422)
+                    return JsonResponse(errors, status=422)
 
             elif (
                 request.method == "POST"
@@ -55,7 +55,7 @@ def validator(schema=None):
                 else:
                     valid, errors = schema(_in)
                     if not valid:
-                        return HttpResponse(errors, status=422)
+                        return JsonResponse(errors, status=422)
 
             return func(*args, **kwargs)
 

@@ -40,7 +40,21 @@ def validate_verification(_in):
 
 
 def validate_login(_in):
-    schema = {}
+    schema = {
+        "email": {
+            "type": "string",
+            "maxlength": 48,
+            "nullable": False,
+            "required": True,
+            "regex": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+        },
+        "password": {
+            "type": "string",
+            "maxlength": 16,
+            "nullable": False,
+            "required": True,
+        },
+    }
 
     v = Validator(schema)
     is_valid = v.validate(_in)
