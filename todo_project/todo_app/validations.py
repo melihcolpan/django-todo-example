@@ -86,7 +86,30 @@ def validate_logout(_in):
 
 
 def validate_password_reset(_in):
-    schema = {}
+    schema = {
+        "email": {
+            "type": "string",
+            "maxlength": 48,
+            "nullable": False,
+            "required": True,
+            "regex": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+        },
+    }
+
+    v = Validator(schema)
+    is_valid = v.validate(_in)
+    return is_valid, v.errors
+
+
+def validate_password_reset_verification(_in):
+    schema = {
+        "new_password": {
+            "type": "string",
+            "maxlength": 48,
+            "nullable": False,
+            "required": True,
+        },
+    }
 
     v = Validator(schema)
     is_valid = v.validate(_in)

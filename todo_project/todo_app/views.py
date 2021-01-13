@@ -9,7 +9,7 @@ from django.http import HttpResponse, JsonResponse
 from ratelimit.decorators import ratelimit
 
 from todo_app import validations as v
-from todo_app.consts import JWT_ALGORITHM, VERIFICATION_JWT_SECRET
+from todo_app.consts import HOST_ADDR, JWT_ALGORITHM, VERIFICATION_JWT_SECRET
 from todo_app.middlewares import login_required, validator
 from todo_app.models import Blacklist, User
 
@@ -20,13 +20,16 @@ def register(request):
     _in = json.loads(request.body.decode("utf-8"))
 
     try:
-        User.objects.create(**_in)
+        user = User.objects.create(**_in)
     except IntegrityError:
         return HttpResponse(status=409)
 
+    token = user.generate_token(token_type="verification")
+    url = f"{HOST_ADDR}/auth/verification?verification={token}"
     # TODO: Send verification email.
 
-    return HttpResponse(status=201)
+    # Url is sent for DEVELOPMENT! After email client is completed, this will remove.
+    return HttpResponse(url, status=201)
 
 
 @validator(v.validate_verification)
@@ -58,6 +61,7 @@ def login(request):
         return HttpResponse(status=404)
 
 
+@login_required
 @validator(v.validate_logout)
 def logout(request):
     _in = json.loads(request.body.decode("utf-8"))
@@ -70,9 +74,28 @@ def logout(request):
     return HttpResponse(status=200)
 
 
+@ratelimit(key="ip", rate="1/m")
 @validator(v.validate_password_reset)
 def password_reset(request):
-    return NotImplemented
+    _in = json.loads(request.body.decode("utf-8"))
+
+    user = User.objects.filter(email=_in["email"]).get()
+    token = user.generate_token(token_type="verification")
+    url = f"{HOST_ADDR}/auth/password/reset?token={token}"
+    # TODO: Send verification email.
+
+    # Url is sent for DEVELOPMENT! After email client is completed, this will remove.
+    return HttpResponse(url, status=200)
+
+
+@login_required
+@validator(v.validate_password_reset_verification)
+def password_reset_verification(request):
+    _in = json.loads(request.body.decode("utf-8"))
+    User.objects.filter(id=request.session.get("user").get("user_id")).update(
+        **{"password": _in["new_password"]}
+    )
+    return HttpResponse(status=200)
 
 
 @login_required
@@ -81,7 +104,8 @@ def password_update(request):
     # TODO: Check old password and keep hash passwords.
     _in = json.loads(request.body.decode("utf-8"))
 
-    User.objects.filter(id=request.session.get("user").get("id")).update(
+    User.objects.filter(id=request.session.get("user").get("user_id")).update(
         **{"password": _in["new_password"]}
     )
+
     return HttpResponse(status=200)

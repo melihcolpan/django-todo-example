@@ -17,7 +17,7 @@ def login_required(func):
         try:
             jwt_token = request.META["Authorization"].replace("Bearer ", "")
             data = jwt.decode(jwt_token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-
+            print(data)
             if not data["is_active"]:
                 return HttpResponse("Your account suspended.", status=401)
 

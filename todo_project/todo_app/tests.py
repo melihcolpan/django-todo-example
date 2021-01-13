@@ -47,20 +47,36 @@ class TodoTestCase(TestCase):
     def test_logout(self):
         data = {"refresh_token": self.user.generate_token(token_type="refresh")}
         request = self.client.post(
-            "/auth/logout", data=data, content_type="application/json"
+            "/auth/logout", data=data, content_type="application/json", **self.headers
         )
         self.assertEqual(200, request.status_code)
 
     def test_password_reset(self):
-        request = self.client.get("/auth/password_reset")
-
-    def test_password_update(self):
-        data = {"new_password": "new-secret", "old_password": self.user.password}
+        data = {"email": self.user.email}
         request = self.client.post(
-            "/auth/password_update",
+            "/auth/password/reset", data=data, content_type="application/json"
+        )
+        self.assertEqual(200, request.status_code)
+
+    def test_password_reset_verification(self):
+        data = {"new_password": "new-secret"}
+        request = self.client.post(
+            "/auth/password/reset/verification",
             data=data,
             content_type="application/json",
             **self.headers,
         )
-        print(request.status_code)
-        print(request.content)
+        self.assertEqual(200, request.status_code)
+
+    def test_password_update(self):
+        data = {"new_password": "new-secret", "old_password": self.user.password}
+        request = self.client.post(
+            "/auth/password/update",
+            data=data,
+            content_type="application/json",
+            **self.headers,
+        )
+        self.assertEqual(200, request.status_code)
+        user = User.objects.filter(id=self.user.id).get()
+        print(user.password)
+        self.assertEqual(data["new_password"], user.password)
