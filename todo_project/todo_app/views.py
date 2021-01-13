@@ -9,7 +9,7 @@ from ratelimit.decorators import ratelimit
 
 from todo_app import validations as v
 from todo_app.middlewares import validator
-from todo_app.models import User
+from todo_app.models import User, Blacklist
 
 
 @validator(v.validate_register)
@@ -38,7 +38,13 @@ def login(request):
 
     try:
         user = User.objects.filter(email=_in["email"], password=_in["password"]).get()
-        return JsonResponse({"data": {"access_token": user.generate_access_token()}})
+        rs = {
+            "data": {
+                "access_token": user.generate_access_token(),
+                "refresh_token": user.generate_refresh_token(),
+            }
+        }
+        return JsonResponse(rs)
 
     except User.DoesNotExist:
         return HttpResponse(status=404)
@@ -46,7 +52,14 @@ def login(request):
 
 @validator(v.validate_logout)
 def logout(request):
-    return NotImplemented
+    _in = json.loads(request.body.decode("utf-8"))
+
+    check = Blacklist.objects.filter(refresh_token=_in["refresh_token"]).exists()
+    if check:
+        return HttpResponse(status=409)
+
+    Blacklist.objects.create(**_in)
+    return HttpResponse(status=200)
 
 
 @validator(v.validate_password_reset)

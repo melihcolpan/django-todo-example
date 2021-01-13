@@ -38,7 +38,11 @@ class TodoTestCase(TestCase):
         self.assertIn("access_token", result["data"])
 
     def test_logout(self):
-        request = self.client.get("/auth/logout")
+        data = {"refresh_token": self.user.generate_refresh_token()}
+        request = self.client.post(
+            "/auth/logout", data=data, content_type="application/json"
+        )
+        self.assertEqual(200, request.status_code)
 
     def test_password_reset(self):
         request = self.client.get("/auth/password_reset")

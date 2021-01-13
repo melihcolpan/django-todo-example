@@ -62,7 +62,14 @@ def validate_login(_in):
 
 
 def validate_logout(_in):
-    schema = {}
+    schema = {
+        "refresh_token": {
+            "type": "string",
+            "maxlength": 255,
+            "nullable": False,
+            "required": True,
+        },
+    }
 
     v = Validator(schema)
     is_valid = v.validate(_in)
