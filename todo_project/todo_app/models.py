@@ -11,7 +11,9 @@ from todo_app.consts import (
     JWT_EXP_DELTA_SECONDS,
     JWT_SECRET,
     REFRESH_JWT_EXP_DELTA_SECONDS,
-    REFRESH_JWT_SECRET, VERIFICATION_JWT_EXP_DELTA_SECONDS, HOST_ADDR, VERIFICATION_JWT_SECRET,
+    REFRESH_JWT_SECRET,
+    VERIFICATION_JWT_EXP_DELTA_SECONDS,
+    VERIFICATION_JWT_SECRET,
 )
 
 
@@ -25,33 +27,24 @@ class User(models.Model):
     name = models.CharField(max_length=48)
     surname = models.CharField(max_length=48)
 
-    def generate_access_token(self):
-        payload = {
-            "user_id": self.id,
-            "email": self.email,
-            "is_active": self.is_active,
-            "exp": datetime.utcnow() + timedelta(seconds=JWT_EXP_DELTA_SECONDS),
-        }
-        return jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
+    def generate_token(self, token_type="access"):
+        if token_type == "access":
+            exp_delta_seconds = JWT_EXP_DELTA_SECONDS
+            secret = JWT_SECRET
+        elif token_type == "refresh":
+            exp_delta_seconds = REFRESH_JWT_EXP_DELTA_SECONDS
+            secret = REFRESH_JWT_SECRET
+        else:
+            exp_delta_seconds = VERIFICATION_JWT_EXP_DELTA_SECONDS
+            secret = VERIFICATION_JWT_SECRET
 
-    def generate_refresh_token(self):
         payload = {
             "user_id": self.id,
             "email": self.email,
             "is_active": self.is_active,
-            "exp": datetime.utcnow() + timedelta(seconds=REFRESH_JWT_EXP_DELTA_SECONDS),
+            "exp": datetime.utcnow() + timedelta(seconds=exp_delta_seconds),
         }
-        return jwt.encode(payload, REFRESH_JWT_SECRET, JWT_ALGORITHM)
-
-    def generate_verification_url(self):
-        payload = {
-            "user_id": self.id,
-            "email": self.email,
-            "is_active": self.is_active,
-            "exp": datetime.utcnow() + timedelta(seconds=VERIFICATION_JWT_EXP_DELTA_SECONDS),
-        }
-        verification = jwt.encode(payload, VERIFICATION_JWT_SECRET, JWT_ALGORITHM)
-        return f"{HOST_ADDR}/?verification={verification}"
+        return jwt.encode(payload, secret, JWT_ALGORITHM)
 
 
 class Todo(models.Model):

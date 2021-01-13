@@ -6,15 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('todo_app', '0002_user_is_verified'),
+        ("todo_app", "0002_user_is_verified"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Blacklist',
+            name="Blacklist",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('refresh_token', models.CharField(max_length=255)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("refresh_token", models.CharField(max_length=255)),
             ],
         ),
     ]

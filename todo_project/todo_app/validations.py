@@ -32,7 +32,16 @@ def validate_register(_in):
 
 
 def validate_verification(_in):
-    schema = {}
+    schema = {
+        "verification": {
+            "type": "list",
+            "maxlength": 1,
+            "minlength": 1,
+            "nullable": False,
+            "required": True,
+            "items": [{"type": "string"}],
+        },
+    }
 
     v = Validator(schema)
     is_valid = v.validate(_in)
@@ -85,7 +94,20 @@ def validate_password_reset(_in):
 
 
 def validate_password_update(_in):
-    schema = {}
+    schema = {
+        "old_password": {
+            "type": "string",
+            "maxlength": 48,
+            "nullable": False,
+            "required": True,
+        },
+        "new_password": {
+            "type": "string",
+            "maxlength": 48,
+            "nullable": False,
+            "required": True,
+        },
+    }
 
     v = Validator(schema)
     is_valid = v.validate(_in)
