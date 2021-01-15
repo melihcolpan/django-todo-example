@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
+
 from cerberus import Validator
 
 
@@ -129,6 +131,45 @@ def validate_password_update(_in):
             "maxlength": 48,
             "nullable": False,
             "required": True,
+        },
+    }
+
+    v = Validator(schema)
+    is_valid = v.validate(_in)
+    return is_valid, v.errors
+
+
+def validate_update_todo(_in):
+    schema = {
+        "is_completed": {
+            "type": "boolean",
+            "maxlength": 48,
+            "nullable": False,
+            "required": False,
+        },
+        "is_removed": {
+            "type": "boolean",
+            "maxlength": 48,
+            "nullable": False,
+            "required": False,
+        },
+        "title": {
+            "type": "string",
+            "maxlength": 48,
+            "nullable": False,
+            "required": False,
+        },
+        "content": {
+            "type": "string",
+            "maxlength": 48,
+            "nullable": False,
+            "required": False,
+        },
+        "expire_at": {
+            "type": "datetime",
+            "coerce": lambda s: datetime.strptime(s, "%Y-%m-%d %H:%M:%S"),
+            "nullable": False,
+            "required": False,
         },
     }
 
