@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from datetime import datetime, timedelta
+
 from django.test import TestCase
 
 from .models import Todo, User
@@ -80,3 +82,64 @@ class TodoTestCase(TestCase):
         user = User.objects.filter(id=self.user.id).get()
         print(user.password)
         self.assertEqual(data["new_password"], user.password)
+
+    def test_get_todos(self):
+        request = self.client.get("/data/todos", **self.headers)
+        self.assertEqual(200, request.status_code)
+        rs = request.json()
+        self.assertIn("data", rs)
+
+    def get_todo(self):
+        request = self.client.get(f"/data/todos/{self.todo.id}", **self.headers)
+        self.assertEqual(200, request.status_code)
+        rs = request.json()
+        self.assertIn("data", rs)
+
+    def update_todo(self):
+        data = {
+            "is_completed": True,
+            "is_removed": False,
+            "title": "Updated Title",
+            "content": "Updated Content",
+            "expire_at": (datetime.now() + timedelta(days=30)).__format__(
+                "%Y-%m-%d %H:%M:%S"
+            ),
+        }
+        request = self.client.put(
+            f"/data/todos/{self.todo.id}",
+            data=data,
+            content_type="application/json",
+            **self.headers,
+        )
+        self.assertEqual(200, request.status_code)
+        todo = Todo.objects.filter(id=self.todo.id).get()
+        self.assertEqual(data["is_completed"], todo.is_completed)
+        self.assertEqual(data["is_removed"], todo.is_removed)
+        self.assertEqual(data["title"], todo.title)
+        self.assertEqual(data["content"], todo.content)
+        self.assertEqual(
+            data["expire_at"], todo.expire_at.__format__("%Y-%m-%d %H:%M:%S")
+        )
+
+    def post_todo(self):
+        data = {
+            "is_completed": True,
+            "is_removed": False,
+            "title": "Updated Title",
+            "content": "Updated Content",
+            "expire_at": (datetime.now() + timedelta(days=30)).__format__(
+                "%Y-%m-%d %H:%M:%S"
+            ),
+        }
+        request = self.client.post(
+            f"/data/todos", data=data, content_type="application/json", **self.headers
+        )
+        self.assertEqual(201, request.status_code)
+
+    def delete_todo(self):
+        request = self.client.delete(
+            f"/data/todos/{self.todo.id}",
+            content_type="application/json",
+            **self.headers,
+        )
+        self.assertEqual(204, request.status_code)
