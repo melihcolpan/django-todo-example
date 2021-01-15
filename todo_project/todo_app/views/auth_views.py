@@ -92,9 +92,9 @@ def password_reset(request):
 @validator(v.validate_password_reset_verification)
 def password_reset_verification(request):
     _in = json.loads(request.body.decode("utf-8"))
-    User.objects.filter(id=request.session.get("user").get("user_id")).update(
-        **{"password": _in["new_password"]}
-    )
+    user_id = request.session.get("user").get("user_id")
+
+    User.objects.filter(id=user_id).update(**{"password": _in["new_password"]})
     return HttpResponse(status=200)
 
 
@@ -103,9 +103,7 @@ def password_reset_verification(request):
 def password_update(request):
     # TODO: Check old password and keep hash passwords.
     _in = json.loads(request.body.decode("utf-8"))
+    user_id = request.session.get("user").get("user_id")
 
-    User.objects.filter(id=request.session.get("user").get("user_id")).update(
-        **{"password": _in["new_password"]}
-    )
-
+    User.objects.filter(id=user_id).update(**{"password": _in["new_password"]})
     return HttpResponse(status=200)
