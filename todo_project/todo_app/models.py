@@ -50,6 +50,7 @@ class User(models.Model):
 class Todo(models.Model):
     id = models.AutoField(primary_key=True)
     is_completed = models.BooleanField(default=False, blank=False)
+    is_removed = models.BooleanField(default=False, blank=False)
     title = models.CharField(max_length=200)
     content = models.TextField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
