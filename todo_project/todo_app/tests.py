@@ -80,7 +80,6 @@ class TodoTestCase(TestCase):
         )
         self.assertEqual(200, request.status_code)
         user = User.objects.filter(id=self.user.id).get()
-        print(user.password)
         self.assertEqual(data["new_password"], user.password)
 
     def test_get_todos(self):
